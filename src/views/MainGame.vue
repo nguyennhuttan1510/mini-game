@@ -8,13 +8,13 @@
       </div>
     </div>
     <div v-if="checkFinish" class="flex justify-center gap-x-6">
-      <button type="button" class="py-2 px-4 bg-sky-400 rounded" @click="() => { cards = initCards(amountCard) }">Try
+      <button type="button" class="py-2 px-4 bg-sky-400 rounded" @click="tryAgain()">Try
         again</button>
       <button type="button" class="py-2 px-4 bg-red-500 rounded" @click="() => { router.push('/') }">Back</button>
     </div>
     <Teleport to="#app">
       <ModalPopup :openModal="openModal">
-        <p class="text-black font-bold">Congratulations!</p>
+        <p class="text-black font-bold">{{handleCalculatePoint().message}}!</p>
         <template #footer>
           <button type="button" class="py-2 px-4 bg-red-500 rounded w-full"
             @click="() => { openModal = false }">Close</button>
@@ -29,28 +29,64 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import ModalPopup from "../components/ModalPopup.vue";
-const initCards = (amountCard) => {
+
+const initCoupleCard = (amountCard) => {
   if (Number(amountCard) % 2 > 0) throw new Error("Amount Card must be divide by 2")
-  const coupleCard = amountCard / 2
-  const cardCreate = Array.from({ length: coupleCard }, (_, i) => ({ id: i, isSelected: false, finish: false, color: `#${Math.floor(Math.random() * 16777215).toString(16)}` }))
+  return amountCard / 2
+}
+
+const initCards = (amountCard) => {
+  const coupleCard = initCoupleCard(amountCard)
+  const randomColor = () => {
+    let initColor = ''
+    while (initColor.length < 6) {
+      initColor = `${Math.floor(Math.random() * 16777215).toString(16)}`
+    }
+    return `#${initColor}`
+  }
+  const cardCreate = Array.from({ length: coupleCard }, (_, i) => ({ id: i, isSelected: false, finish: false, color: randomColor() }))
+  console.log("🚀 ~ file: MainGame.vue ~ line 39 ~ initCards ~ cardCreate", cardCreate)
   let randomCard = [];
   for (let index = 0; index < 3; index++) {
     randomCard = [...cardCreate, ...cardCreate].sort(() => 0.5 - Math.random());
   }
   return randomCard
 }
+
 const DEFAULT_AMOUNT_CARD = 12
 const store = useStore()
 const router = useRouter()
 const amountCard = Object.keys(store.state.modeGame).length > 0 ? store.state.modeGame.amount : DEFAULT_AMOUNT_CARD
 let cards = ref(initCards(amountCard))
 const openModal = ref(false)
+const countStep = ref(0)
 let coupleCardSelected = ref([null, null]);
 
-
+const handleCalculatePoint = () => {
+  const minStep = initCoupleCard(amountCard) * 2
+  const generatePoint = minStep / countStep.value
+  console.log("🚀 ~ file: MainGame.vue ~ line 68 ~ handleCalculatePoint ~ generatePoint", generatePoint)
+  if (generatePoint < 0.3) {
+    return {
+      range: 1,
+      message: "Not Good"
+    }
+  } else if(generatePoint < 0.6) {
+    return {
+      range: 2,
+      message: "Good"
+    }
+  } else {
+    return {
+      range: 3,
+      message: "Wonderful"
+    }
+  }
+}
 
 const handleSelectCard = (card, indexCard) => {
   if (card.isSelected) throw new Error("This card is selected")
+  countStep.value++ 
   if (coupleCardSelected.value[0] === null) {
     coupleCardSelected.value[0] = card
   } else if (coupleCardSelected.value[1] === null) {
@@ -69,7 +105,7 @@ const handleSelectCard = (card, indexCard) => {
     }
     coupleCardSelected.value = [null, null]
   }
-  setTimeout(compareCard, 500)
+  setTimeout(compareCard, 400)
 }
 
 const checkFinish = computed(() => {
@@ -77,6 +113,13 @@ const checkFinish = computed(() => {
   openModal.value = isFinish
   return isFinish
 }) 
+
+const tryAgain = () => {
+  countStep.value = 0
+  cards.value = initCards(amountCard) 
+}
+
+
 </script>
 <style scoped lang="scss">
 .wrap_box {
