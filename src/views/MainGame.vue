@@ -65,7 +65,6 @@ let coupleCardSelected = ref([null, null]);
 const handleCalculatePoint = () => {
   const minStep = initCoupleCard(amountCard) * 2
   const generatePoint = minStep / countStep.value
-  console.log("🚀 ~ file: MainGame.vue ~ line 68 ~ handleCalculatePoint ~ generatePoint", generatePoint)
   if (generatePoint < 0.3) {
     return {
       range: 1,
