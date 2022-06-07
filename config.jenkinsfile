@@ -12,11 +12,11 @@ pipeline {
                 git config user.name "Jenkins Bot"
                 cd /var/www/mini-game/
                 
-                sudo git fetch 
-                sudo git checkout master
-                sudo git pull origin master
-                sudo npm install
-                sudo npm run build 
+                sudo -A git fetch 
+                sudo -A git checkout master
+                sudo -A git pull origin master
+                sudo -A npm install
+                sudo -A npm run build 
               """ 
             }
             echo 'Build Done'
