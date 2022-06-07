@@ -6,6 +6,9 @@ pipeline {
                 echo 'Hello World'
                 echo 'This is config.jenkins'
             }
+            steps {
+                echo 'step 2'
+            }
         }
     }
 }
