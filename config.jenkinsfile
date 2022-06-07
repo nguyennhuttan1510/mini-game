@@ -2,13 +2,26 @@ pipeline {
     agent any
     stages {
         stage('Hello') {
-            steps {
-                echo 'Hello World'
-                echo 'This is config.jenkins'
+          
+          steps {
+            echo 'Checkout source'
+            echo 'Clone source'
+            script {
+              sh """
+                git config user.email 'jenkinsbot838@gmail.com'
+                git config user.name "Jenkins Bot"
+                cd /var/www/mini-game/
+                git fetch 
+                git checkout master
+                git pull origin master
+                npm install
+                npm run build 
+              """ 
             }
-            steps {
-                echo 'step 2'
-            }
+            echo 'Build Done'
+                
+          }
+          
         }
     }
 }
