@@ -4,8 +4,8 @@ pipeline {
         stage('Hello') {
           
           steps {
-            echo 'Checkout source'
-            echo 'Clone source'
+            echo 'go to source'
+            echo 'Clone source from repo'
             script {
               sh """
                 git config user.email 'jenkinsbot838@gmail.com'
