@@ -4,7 +4,7 @@ pipeline {
         stage('Hello') {
           
           steps {
-            echo 'go to source'
+            echo 'Go to source'
             echo 'Clone source from repo'
             script {
               sh """
