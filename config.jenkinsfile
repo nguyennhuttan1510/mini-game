@@ -13,8 +13,6 @@ pipeline {
                 sudo git clone https://github.com/nguyennhuttan1510/mini-game.git mini-game
                 
                 cd mini-game
-                git config user.email 'nguyennhuttan15102000@gmail.com'
-                git config user.name "Jenkins Bot"
                 
                 sudo git checkout master
                 sudo npm install
