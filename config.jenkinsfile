@@ -9,7 +9,7 @@ pipeline {
             script {
               sh """
                 cd /var/www
-                sudo rm -r /mini-game
+                sudo rm -r mini-game
                 sudo git clone https://github.com/nguyennhuttan1510/mini-game.git mini-game
                 
                 cd /mini-game
