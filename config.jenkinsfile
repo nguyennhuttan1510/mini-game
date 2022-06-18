@@ -8,13 +8,15 @@ pipeline {
             echo 'Clone source from repo'
             script {
               sh """
-                git config user.email 'jenkinsbot838@gmail.com'
-                git config user.name "Jenkins Bot"
-                cd /var/www/mini-game/
+                cd /var/www
+                sudo rm -r /mini-game
+                sudo git clone https://github.com/nguyennhuttan1510/mini-game.git mini-game
                 
-                sudo git fetch 
+                cd /mini-game
+                git config user.email 'nguyennhuttan15102000@gmail.com'
+                git config user.name "Jenkins Bot"
+                
                 sudo git checkout master
-                sudo git pull origin master
                 sudo npm install
                 sudo npm run build 
               """ 
