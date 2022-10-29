@@ -5,7 +5,7 @@ pipeline {
       steps {
         withDockerRegistry(credentialsId: 'docker-jenkins', url: 'https://hub.docker.com/') {
           sh '''
-            docker build -t docker-jenkens .
+            docker build -f Dockerfile -t docker-jenkens .
             docker push docker-jenkens
           '''
         }
