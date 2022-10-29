@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build image') {
       steps {
-        withDockerRegistry(credentialsId: 'docker-hub', url: 'https://index.docker.io/v1/') {
+        withDockerRegistry(credentialsId: 'docker-jenkins', url: 'https://hub.docker.com/') {
           sh '''
             docker build -t docker-jenkens .
             docker push docker-jenkens
